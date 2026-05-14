@@ -1,0 +1,33 @@
+.card {
+  border: 1px solid #e8e8e8;
+  border-radius: 8px;
+  padding: 24px;
+  width: 200px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background-color: #86a9da;
+  color: white;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+}
+
+.name {
+  margin: 0 0 8px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.role {
+  margin: 0;
+  color: #888;
+  font-size: 14px;
+}
