@@ -1,10 +1,10 @@
-function UsersPage() {
+function SettingsPage() {
   return (
     <div>
-      <h1>ユーザー管理</h1>
-      <p>ここにユーザーの一覧が入ります。</p>
+      <h1>ユーザーページ</h1>
+      <p>ーーーーーーーー</p>
     </div>
   );
 }
 
-export default UsersPage;
+export default SettingsPage;

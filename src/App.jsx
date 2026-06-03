@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./components/Layout";
 import Dashboard from "./pages/DashboardPage";
 import UsersPage from "./pages/UsersPage";
+import ContactsPage from "./pages/ContactsPage";
 import SettingsPage from "./pages/SettingsPage";
 
 function App() {
@@ -22,6 +23,14 @@ function App() {
           element={
             <Layout>
               <UsersPage />
+            </Layout>
+          }
+        />
+        <Route
+          path="/contacts"
+          element={
+            <Layout>
+              <ContactsPage />
             </Layout>
           }
         />

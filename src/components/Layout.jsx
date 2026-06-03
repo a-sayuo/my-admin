@@ -5,6 +5,7 @@ import styles from "./Layout.module.css";
 const navItems = [
   { path: "/", label: "ダッシュボード" },
   { path: "/users", label: "ユーザー管理" },
+  { path: "/contacts", label: "お問合せ一覧" },
   { path: "/settings", label: "設定" },
 ];
 
