@@ -1,0 +1,193 @@
+.container {
+  padding: 24px;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: bold;
+  margin: 0 0 20px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.table th {
+  background: #fafafa;
+  padding: 12px 16px;
+  text-align: center;
+  font-size: 13px;
+  color: #888;
+  border-bottom: 1px solid #e8e8e8;
+  font-weight: 500;
+}
+
+.table td {
+  padding: 12px 16px;
+  text-align: center;
+  vertical-align: middle;
+  font-size: 14px;
+  border-bottom: 1px solid #f0f0f0;
+  color: #333;
+}
+
+.table tr:last-child td {
+  border-bottom: none;
+}
+
+.table tr:hover td {
+  background: #fafafa;
+}
+
+.badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 99px;
+  font-size: 12px;
+  background: #e6f4ff;
+  color: #4874b1;
+}
+
+.empty {
+  text-align: center;
+  padding: 40px;
+  color: #aaa;
+}
+
+.loading {
+  padding: 40px;
+  text-align: center;
+  color: #888;
+}
+
+.error {
+  padding: 24px;
+  color: #ff4d4f;
+}
+
+.deleteButton {
+  padding: 4px 10px;
+  background: #faf3f3;
+  border: 1px solid #e5afb2;
+  color: #c26366;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.deleteButton:hover {
+  background: #e0888d;
+  color: rgb(255, 255, 255);
+}
+
+/* 編集ボタン */
+.editButton {
+  padding: 4px 10px;
+  background: #f0f5ff;
+  border: 1px solid #adc6ff;
+  color: #4874b1;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  margin-right: 6px;
+}
+
+.editButton:hover {
+  background: #4874b1;
+  color: white;
+}
+
+/* 編集フォーム */
+.editForm {
+  margin-top: 32px;
+  padding: 24px;
+  background: rgb(255, 255, 255);
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  max-width: 480px;
+}
+
+.editForm h2 {
+  font-size: 16px;
+  font-weight: bold;
+  margin: 0 0 20px;
+  color: #333;
+}
+
+.editForm label {
+  display: block;
+  font-size: 13px;
+  color: #888;
+  margin-bottom: 4px;
+  margin-top: 12px;
+}
+
+.editForm label:first-of-type {
+  margin-top: 0;
+}
+
+.editForm input,
+.editForm select,
+.editForm textarea {
+  display: block;
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #e8e8e8;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #333;
+  box-sizing: border-box;
+  background: white;
+}
+
+.editForm input:focus,
+.editForm select:focus,
+.editForm textarea:focus {
+  outline: none;
+  border-color: #4874b1;
+}
+
+.editForm textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* 編集フォームのボタンエリア */
+.editFormButtons {
+  display: flex;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.updateButton {
+  padding: 8px 20px;
+  background: #4874b1;
+  border: none;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.updateButton:hover {
+  background: #3a5d8f;
+}
+
+.cancelButton {
+  padding: 8px 20px;
+  background: white;
+  border: 1px solid #e8e8e8;
+  color: #888;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.cancelButton:hover {
+  background: #e6e4e4;
+}
