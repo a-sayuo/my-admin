@@ -4,11 +4,16 @@ import Dashboard from "./pages/DashboardPage";
 import UsersPage from "./pages/UsersPage";
 import ContactsPage from "./pages/ContactsPage";
 import SettingsPage from "./pages/SettingsPage";
+import LoginPage from "./pages/LoginPage"; // ←ここを追加
+
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* ログインページ（Layout で囲まない） */}
+        <Route path="/login" element={<LoginPage />} />
+
         {/* Layout で全ページを囲む */}
         <Route
           path="/"
@@ -46,5 +51,6 @@ function App() {
     </BrowserRouter>
   );
 }
+
 
 export default App;
