@@ -1,23 +1,98 @@
 import { useState, useEffect } from "react";
 import styles from "./ContactsPage.module.css";
+import api from "../lib/axios";
 
 // 都道府県→市区町村データ（Laravel側と合わせる）
 const cityData = {
   東京都: [
-    "千代田区", "中央区", "港区", "新宿区", "文京区", "台東区", "墨田区", "江東区",
-    "品川区", "目黒区", "大田区", "世田谷区", "渋谷区", "中野区", "杉並区", "豊島区",
-    "北区", "荒川区", "板橋区", "練馬区", "足立区", "葛飾区", "江戸川区", "八王子市",
-    "立川市", "武蔵野市", "三鷹市", "青梅市", "府中市", "昭島市", "調布市", "町田市",
-    "小金井市", "小平市", "日野市", "東村山市", "国分寺市", "国立市", "福生市",
-    "狛江市", "東大和市", "清瀬市", "東久留米市", "武蔵村山市", "多摩市", "稲城市",
-    "羽村市", "あきる野市", "西東京市",
+    "千代田区",
+    "中央区",
+    "港区",
+    "新宿区",
+    "文京区",
+    "台東区",
+    "墨田区",
+    "江東区",
+    "品川区",
+    "目黒区",
+    "大田区",
+    "世田谷区",
+    "渋谷区",
+    "中野区",
+    "杉並区",
+    "豊島区",
+    "北区",
+    "荒川区",
+    "板橋区",
+    "練馬区",
+    "足立区",
+    "葛飾区",
+    "江戸川区",
+    "八王子市",
+    "立川市",
+    "武蔵野市",
+    "三鷹市",
+    "青梅市",
+    "府中市",
+    "昭島市",
+    "調布市",
+    "町田市",
+    "小金井市",
+    "小平市",
+    "日野市",
+    "東村山市",
+    "国分寺市",
+    "国立市",
+    "福生市",
+    "狛江市",
+    "東大和市",
+    "清瀬市",
+    "東久留米市",
+    "武蔵村山市",
+    "多摩市",
+    "稲城市",
+    "羽村市",
+    "あきる野市",
+    "西東京市",
   ],
   千葉県: [
-    "千葉市", "銚子市", "市川市", "船橋市", "館山市", "木更津市", "松戸市", "野田市",
-    "茂原市", "成田市", "佐倉市", "東金市", "旭市", "習志野市", "柏市", "勝浦市",
-    "市原市", "流山市", "八千代市", "我孫子市", "鴨川市", "鎌ケ谷市", "君津市",
-    "富津市", "浦安市", "四街道市", "袖ケ浦市", "八街市", "印西市", "白井市",
-    "富里市", "南房総市", "匝瑳市", "香取市", "山武市", "いすみ市", "大網白里市",
+    "千葉市",
+    "銚子市",
+    "市川市",
+    "船橋市",
+    "館山市",
+    "木更津市",
+    "松戸市",
+    "野田市",
+    "茂原市",
+    "成田市",
+    "佐倉市",
+    "東金市",
+    "旭市",
+    "習志野市",
+    "柏市",
+    "勝浦市",
+    "市原市",
+    "流山市",
+    "八千代市",
+    "我孫子市",
+    "鴨川市",
+    "鎌ケ谷市",
+    "君津市",
+    "富津市",
+    "浦安市",
+    "四街道市",
+    "袖ケ浦市",
+    "八街市",
+    "印西市",
+    "白井市",
+    "富里市",
+    "南房総市",
+    "匝瑳市",
+    "香取市",
+    "山武市",
+    "いすみ市",
+    "大網白里市",
   ],
 };
 
@@ -34,24 +109,20 @@ function ContactsPage() {
     const fetchContacts = async () => {
       try {
         const [contactsRes, categoriesRes, usersRes] = await Promise.all([
-          fetch("http://localhost:8080/api/contacts"),
-          fetch("http://localhost:8080/api/categories"),
-          fetch("http://localhost:8080/api/users"),
+          api.get("/api/contacts"),
+          api.get("/api/categories"),
+          api.get("/api/users"),
         ]);
 
-        if (!contactsRes.ok) throw new Error(`お問い合わせの取得に失敗！ status: ${contactsRes.status}`);
-        if (!categoriesRes.ok) throw new Error(`カテゴリの取得に失敗！ status: ${categoriesRes.status}`);
-        if (!usersRes.ok) throw new Error(`担当者の取得に失敗！ status: ${usersRes.status}`);
-
-        const contactsData = await contactsRes.json();
-        const categoriesData = await categoriesRes.json();
-        const usersData = await usersRes.json();
+        const contactsData = await contactsRes.data;
+        const categoriesData = await categoriesRes.data;
+        const usersData = await usersRes.data;
 
         setContacts(contactsData.data ?? contactsData);
         setCategories(categoriesData.data ?? categoriesData);
         setUsers(usersData.data ?? usersData);
       } catch (err) {
-        setError(err.message);
+        setError(err.response?.data?.message || err.message);
       } finally {
         setLoading(false);
       }
@@ -63,13 +134,13 @@ function ContactsPage() {
   const handleDelete = async (id) => {
     if (!window.confirm("本当に削除しますか？")) return;
     try {
-      const res = await fetch(`http://localhost:8080/api/contacts/${id}`, {
-        method: "DELETE",
-      });
-      if (!res.ok) throw new Error(`削除に失敗しました！ status: ${res.status}`);
+      // ★送信する直前に、最新のCSRFクッキーをLaravelに要求する
+      await api.get("/sanctum/csrf-cookie");
+      await api.delete(`/api/contacts/${id}`);
+
       setContacts(contacts.filter((contact) => contact.id !== id));
     } catch (err) {
-      setError(err.message);
+      setError(err.response?.data?.message || err.message);
     }
   };
 
@@ -81,23 +152,23 @@ function ContactsPage() {
       const targetCategoryId = editingContact.category?.id ?? editingContact.category_id;
       const targetUserId = editingContact.assigned_user?.id ?? editingContact.assigned_user_id;
 
-      const res = await fetch(`http://localhost:8080/api/contacts/${editingContact.id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: editingContact.name,
-          email: editingContact.email,
-          prefecture: editingContact.prefecture,
-          city: editingContact.city,
-          message: editingContact.message,
-          category_id: targetCategoryId || null,
-          assigned_user_id: targetUserId || null,
-        }),
+      // ★送信する直前に、最新のCSRFクッキーをLaravelに要求する
+      await api.get("/sanctum/csrf-cookie");
+
+      const res = await api.put(`/api/contacts/${editingContact.id}`, {
+        name: editingContact.name,
+        email: editingContact.email,
+        prefecture: editingContact.prefecture,
+        city: editingContact.city,
+        message: editingContact.message,
+        category_id: targetCategoryId || null,
+        assigned_user_id: targetUserId || null,
       });
-      if (!res.ok) throw new Error(`更新に失敗しました！ status: ${res.status}`);
 
       // 最新の「塊（オブジェクト）」をマスターデータから再度探し出して確定させる
-      const UpdatedCategory = targetCategoryId ? categories.find((c) => c.id === Number(targetCategoryId)) : null;
+      const UpdatedCategory = targetCategoryId
+        ? categories.find((c) => c.id === Number(targetCategoryId))
+        : null;
       const UpdatedUser = targetUserId ? users.find((u) => u.id === Number(targetUserId)) : null;
 
       // 一覧画面のデータを書き換える
@@ -110,13 +181,13 @@ function ContactsPage() {
                 category: UpdatedCategory ?? null,
                 assigned_user: UpdatedUser ?? null,
               }
-            : contact
-        )
+            : contact,
+        ),
       );
 
       setEditingContact(null); // フォームを閉じる
     } catch (err) {
-      setError(err.message);
+      setError(err.response.data.message ?? err.message);
     }
   };
 
@@ -142,7 +213,9 @@ function ContactsPage() {
         <tbody>
           {contacts.length === 0 ? (
             <tr>
-              <td colSpan={6} className={styles.empty}>データがありません</td>
+              <td colSpan={6} className={styles.empty}>
+                データがありません
+              </td>
             </tr>
           ) : (
             contacts.map((contact) => (
@@ -198,7 +271,9 @@ function ContactsPage() {
             >
               <option value="">選択してください</option>
               {Object.keys(cityData).map((pref) => (
-                <option key={pref} value={pref}>{pref}</option>
+                <option key={pref} value={pref}>
+                  {pref}
+                </option>
               ))}
             </select>
           </label>
@@ -211,7 +286,9 @@ function ContactsPage() {
             >
               <option value="">選択してください</option>
               {(cityData[editingContact.prefecture] ?? []).map((city) => (
-                <option key={city} value={city}>{city}</option>
+                <option key={city} value={city}>
+                  {city}
+                </option>
               ))}
             </select>
           </label>
@@ -239,7 +316,9 @@ function ContactsPage() {
             >
               <option value="">未分類</option>
               {categories.map((category) => (
-                <option key={category.id} value={category.id}>{category.name}</option>
+                <option key={category.id} value={category.id}>
+                  {category.name}
+                </option>
               ))}
             </select>
           </label>
@@ -259,7 +338,9 @@ function ContactsPage() {
             >
               <option value="">未対応</option>
               {users.map((user) => (
-                <option key={user.id} value={user.id}>{user.name}</option>
+                <option key={user.id} value={user.id}>
+                  {user.name}
+                </option>
               ))}
             </select>
           </label>

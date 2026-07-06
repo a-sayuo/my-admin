@@ -4,8 +4,8 @@ import Dashboard from "./pages/DashboardPage";
 import UsersPage from "./pages/UsersPage";
 import ContactsPage from "./pages/ContactsPage";
 import SettingsPage from "./pages/SettingsPage";
-import LoginPage from "./pages/LoginPage"; // ←ここを追加
-
+import LoginPage from "./pages/LoginPage";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   return (
@@ -34,9 +34,11 @@ function App() {
         <Route
           path="/contacts"
           element={
-            <Layout>
-              <ContactsPage />
-            </Layout>
+            <ProtectedRoute>
+              <Layout>
+                <ContactsPage />
+              </Layout>
+            </ProtectedRoute>
           }
         />
         <Route
@@ -51,6 +53,5 @@ function App() {
     </BrowserRouter>
   );
 }
-
 
 export default App;
